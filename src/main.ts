@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
  
   app.enableCors({
-    origin: ['http://localhost:4200','http://localhost','todo-angular-ldi68nsh5-zacs-projects-1a93e4d3.vercel.app'],
+    origin: ['http://localhost:4200','http://localhost','https://todo-angular-weld.vercel.app/'],
   });
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
