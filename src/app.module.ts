@@ -20,6 +20,7 @@ import { JwtModule } from '@nestjs/jwt';
         database: config.get('DB_NAME'),
         autoLoadEntities: true,
         synchronize: true,
+        ssl: { rejectUnauthorized: false },
       }),
          }),
     TodosModule,
