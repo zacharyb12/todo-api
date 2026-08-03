@@ -8,6 +8,9 @@ import { UserService } from '../user/users.service';
 import { Login } from './dtos/login.dto';
 import { Register } from './dtos/register.dto';
 import { JwtService } from '@nestjs/jwt';
+import * as argon2 from 'argon2';
+
+
 
 @Injectable()
 export class AuthService {
@@ -20,7 +23,9 @@ export class AuthService {
       throw new NotFoundException(`user ${login.email} introuvable`);
     }
 
-    if (user.password != login.password) {
+    const passwordOk = await argon2.verify(user.password, login.password);
+
+    if (!passwordOk) {
       throw new UnauthorizedException('informations incorrectes');
     }
 
@@ -35,6 +40,10 @@ export class AuthService {
     if (existing) {
       throw new ConflictException(`user ${register.email} est indisponible`);
     }
+
+    const hash = await argon2.hash(register.password);
+
+    register.password = hash;
 
     const user = await this.userService.create(register);
 
